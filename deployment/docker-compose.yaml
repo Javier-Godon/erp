@@ -1,0 +1,19 @@
+services:
+  postgres:
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: erp
+      POSTGRES_HOST: postgres
+    image: postgres:16.2
+    ports:
+      - target: 5432
+        published: 5444
+        protocol: tcp
+        mode: ingress
+    pull_policy: if_not_present
+    restart: 'no'
+    volumes:
+      - ./postgres-erp:/var/lib/postgresql/data
+
+
