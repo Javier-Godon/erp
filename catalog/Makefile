@@ -1,0 +1,7 @@
+sqlc:
+	sqlc generate
+
+
+
+
+

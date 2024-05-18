@@ -1,0 +1,21 @@
+version: "2"
+sql:
+  - name: "db"
+    engine: "postgresql"
+    queries: "./persistence/query/"
+    schema: "./persistence/migration/"
+    database:
+#      uri: postgresql://postgres:postgres@localhost:31544/postgres
+      uri: postgresql://postgres:postgres@localhost:5444/erp
+    gen:
+      go:
+        package: "db"
+        out: "./persistence/sqlc"
+#        sql_package: "pgx/v5"
+        emit_json_tags: true
+        emit_prepared_queries: false
+        emit_interface: false
+#        with a parameter limit of 1 it creates a parameter object that groups all parameters
+        query_parameter_limit: 1
+        emit_exact_table_names: false
+        emit_empty_slices: true
