@@ -5,32 +5,37 @@ import (
 	"erp-back/catalog/domain/category"
 	db "erp-back/catalog/persistence/sqlc"
 	"github.com/gin-gonic/gin"
+	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 import (
 	"context"
-	"github.com/google/uuid"
 )
 
 type CatalogRepositoryAdapter struct {
+	db *pgxpool.Pool
 }
 
-func CreateCategory(category category.Category) (uuid.UUID, error) {
+func New(db *pgxpool.Pool) *CatalogRepositoryAdapter {
+	return &CatalogRepositoryAdapter{
+		db: db,
+	}
+}
+
+func (c CatalogRepositoryAdapter) CreateCategory(category *category.Category) (pgtype.UUID, error) {
 
 	params := db.CreateCategoryParams{
 		CategoryID:          category.Id,
-		CategoryName:        sql.NullString{String: category.Name.Value, Valid: true},
-		CategoryDescription: sql.NullString{String: category.Description.Value, Valid: true},
+		CategoryName:        pgtype.Text(sql.NullString{String: category.Name.Value, Valid: true}),
+		CategoryDescription: pgtype.Text(sql.NullString{String: category.Description.Value, Valid: true}),
 	}
 
 	ctx := context.Background()
+	queries := db.New(c.db)
 
-	db.New(db.)
+	categoryCreated, err := queries.CreateCategory(ctx, params)
 
-	categoryCreated, err := db.Queries.CreateCategory(ctx, params)
-	if err != nil {
-		return [16]byte{}, nil
-	}
 	return categoryCreated.CategoryID, err
 
 }

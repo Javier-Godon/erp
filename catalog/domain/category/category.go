@@ -1,9 +1,9 @@
 package category
 
-import "github.com/google/uuid"
+import "github.com/jackc/pgx/v5/pgtype"
 
 type Category struct {
-	Id uuid.UUID
+	Id pgtype.UUID
 	Name
 	Description
 }

@@ -1,9 +1,11 @@
 package rest
 
-import "github.com/google/uuid"
+import (
+	"github.com/jackc/pgx/v5/pgtype"
+)
 
 type UpsertCategoryRequest struct {
-	Id                  uuid.UUID `json:"id" binding:"required"`
-	CategoryName        string    `json:"categoryName" binding:"required"`
-	CategoryDescription string    `json:"categoryDescription" binding:"required"`
+	Id                  pgtype.UUID `json:"id" binding:"required"`
+	CategoryName        string      `json:"categoryName" binding:"required"`
+	CategoryDescription string      `json:"categoryDescription" binding:"required"`
 }

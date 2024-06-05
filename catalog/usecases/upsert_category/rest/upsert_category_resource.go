@@ -30,7 +30,11 @@ func fromUpsertCategoryResultToResponse(result upsert_category.UpsertCategoryRes
 }
 
 func fromUpsertCategoryRequestToCommand(request UpsertCategoryRequest) upsert_category.UpsertCategoryCommand {
-	return upsert_category.UpsertCategoryCommand{Id: request.Id}
+	return upsert_category.UpsertCategoryCommand{
+		Id:                  request.Id,
+		CategoryName:        request.CategoryName,
+		CategoryDescription: request.CategoryDescription,
+	}
 }
 
 //https://stackoverflow.com/questions/42967235/golang-gin-gonic-split-routes-into-multiple-files

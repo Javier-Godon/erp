@@ -1,9 +1,11 @@
 package category_link
 
-import "github.com/google/uuid"
+import (
+	"github.com/jackc/pgx/v5/pgtype"
+)
 
 type CategoryLink struct {
-	id               uuid.UUID
+	id               pgtype.UUID
 	mainCategoryId   Category
 	linkedCategoryId Category
 }

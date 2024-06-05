@@ -1,9 +1,9 @@
 package upsert_category
 
-import "github.com/google/uuid"
+import "github.com/jackc/pgx/v5/pgtype"
 
 type UpsertCategoryCommand struct {
-	Id                  uuid.UUID
-	categoryName        string
-	categoryDescription string
+	Id                  pgtype.UUID
+	CategoryName        string
+	CategoryDescription string
 }

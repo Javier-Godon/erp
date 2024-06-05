@@ -1,15 +1,15 @@
 package category_link
 
 import (
-	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgtype"
 	"gopkg.in/validator.v2"
 )
 
 type Category struct {
-	Value uuid.UUID `validator:"nonzero"`
+	Value pgtype.UUID `validator:"nonzero"`
 }
 
-func NewCategory(id uuid.UUID) *Category {
+func NewCategory(id pgtype.UUID) *Category {
 	return &Category{
 		Value: id,
 	}

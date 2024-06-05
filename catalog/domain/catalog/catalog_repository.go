@@ -2,9 +2,9 @@ package catalog
 
 import (
 	"erp-back/catalog/domain/category"
-	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type Repository interface {
-	CreateCategory(category *category.Category) (uuid.UUID, error)
+	CreateCategory(category *category.Category) (pgtype.UUID, error)
 }

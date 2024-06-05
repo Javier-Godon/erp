@@ -1,5 +1,5 @@
 sqlc:
-	sqlc generate
+	cd catalog; sqlc generate
 
 run:
 	go run main.go

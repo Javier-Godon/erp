@@ -1,7 +1,9 @@
 package upsert_category
 
-import "github.com/google/uuid"
+import (
+	"github.com/jackc/pgx/v5/pgtype"
+)
 
 type UpsertCategoryResult struct {
-	CategoryId uuid.UUID
+	CategoryId pgtype.UUID
 }
