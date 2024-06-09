@@ -58,3 +58,14 @@ func (c CatalogRepositoryAdapter) UpdateCategory(category *category.Category) (p
 	return categoryCreated.CategoryID, err
 
 }
+
+func (c CatalogRepositoryAdapter) DeleteCategory(categoryId pgtype.UUID) (pgtype.UUID, error) {
+
+	ctx := context.Background()
+	queries := db.New(framework.DB)
+
+	err := queries.DeleteCategoryById(ctx, categoryId)
+
+	return categoryId, err
+
+}
