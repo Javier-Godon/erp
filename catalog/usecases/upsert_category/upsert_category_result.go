@@ -1,9 +1,9 @@
-package update_category
+package upsert_category
 
 import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
-type UpdateCategoryResult struct {
+type UpsertCategoryResult struct {
 	CategoryId pgtype.UUID
 }

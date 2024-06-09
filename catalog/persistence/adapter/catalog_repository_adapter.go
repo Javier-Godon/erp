@@ -69,3 +69,20 @@ func (c CatalogRepositoryAdapter) DeleteCategory(categoryId pgtype.UUID) (pgtype
 	return categoryId, err
 
 }
+
+func (c CatalogRepositoryAdapter) FindCategoryById(categoryId pgtype.UUID) (category.Category, error) {
+	ctx := context.Background()
+	queries := db.New(framework.DB)
+
+	catalogCategory, err := queries.FindCategoryById(ctx, categoryId)
+
+	return fromCatalogEntityToDomain(catalogCategory), err
+}
+
+func fromCatalogEntityToDomain(catalogCategory db.CatalogCategory) (catalog category.Category) {
+	return category.Category{
+		Id:          catalogCategory.CategoryID,
+		Name:        *category.NewName(catalogCategory.CategoryName.String),
+		Description: *category.NewDescription(catalogCategory.CategoryDescription.String),
+	}
+}

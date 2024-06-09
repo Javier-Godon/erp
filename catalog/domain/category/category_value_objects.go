@@ -25,3 +25,9 @@ func (n *Name) validate() error {
 type Description struct {
 	Value string
 }
+
+func NewDescription(description string) *Description {
+	return &Description{
+		Value: description,
+	}
+}
