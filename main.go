@@ -2,7 +2,9 @@ package main
 
 import (
 	_ "database/sql"
-	"erp-back/catalog/usecases/upsert_category/rest"
+	create_category "erp-back/catalog/usecases/create_category/rest"
+
+	update_category "erp-back/catalog/usecases/update_category/rest"
 	"erp-back/framework"
 	"github.com/gin-gonic/gin"
 	//"github.com/golang-migrate/migrate/v4"
@@ -44,7 +46,8 @@ func main() {
 	framework.InitDatabase()
 
 	router := gin.Default()
-	rest.RouteUpsertCategory(router)
+	create_category.RouteCreateCategory(router)
+	update_category.RouteUpdateCategory(router)
 	err := router.Run(serverAddress)
 	if err != nil {
 		log.Fatal("cannot start server: ", err)

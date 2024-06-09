@@ -4,6 +4,6 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
-type UpsertCategoryResponse struct {
+type UpdateCategoryResponse struct {
 	Id pgtype.UUID `json:"id" binding:"required"`
 }
