@@ -4,6 +4,7 @@ import (
 	_ "database/sql"
 	create_category "erp-back/catalog/usecases/create_category/rest"
 	delete_category_by_id "erp-back/catalog/usecases/delete_category_by_id/rest"
+	get_category_by_id "erp-back/catalog/usecases/get_category_by_id/rest"
 	update_category "erp-back/catalog/usecases/upsert_category/rest"
 	"erp-back/framework"
 	"github.com/gin-gonic/gin"
@@ -49,6 +50,7 @@ func main() {
 	create_category.RouteCreateCategory(router)
 	update_category.RouteUpsertCategory(router)
 	delete_category_by_id.RouteDeleteCategoryById(router)
+	get_category_by_id.RouteGetCategoryById(router)
 	err := router.Run(serverAddress)
 	if err != nil {
 		log.Fatal("cannot start server: ", err)
