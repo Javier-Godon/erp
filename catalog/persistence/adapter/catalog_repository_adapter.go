@@ -86,3 +86,19 @@ func fromCatalogEntityToDomain(catalogCategory db.CatalogCategory) (catalog cate
 		Description: *category.NewDescription(catalogCategory.CategoryDescription.String),
 	}
 }
+
+func (c CatalogRepositoryAdapter) FindAllMainCategories() ([]category.Category, error) {
+	ctx := context.Background()
+	queries := db.New(framework.DB)
+
+	catalogCategories, err := queries.FindAllMainCategories(ctx)
+
+	return mapCatalogCategoryToCategory(catalogCategories), err
+}
+
+func mapCatalogCategoryToCategory(catalogCategories []db.CatalogCategory) (categories []category.Category) {
+	for _, catalogCategory := range catalogCategories {
+		categories = append(categories, fromCatalogEntityToDomain(catalogCategory))
+	}
+	return categories
+}
