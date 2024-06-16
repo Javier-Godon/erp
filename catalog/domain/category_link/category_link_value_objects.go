@@ -5,17 +5,35 @@ import (
 	"gopkg.in/validator.v2"
 )
 
-type Category struct {
+type MainCategoryId struct {
 	Value pgtype.UUID `validator:"nonzero"`
 }
 
-func NewCategory(id pgtype.UUID) *Category {
-	return &Category{
+func NewMainCategoryIdOfLink(id pgtype.UUID) *MainCategoryId {
+	return &MainCategoryId{
 		Value: id,
 	}
 }
 
-func (n *Category) validate() error {
+func (n *MainCategoryId) validate() error {
+	err := validator.Validate(n)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type LinkedCategoryId struct {
+	Value pgtype.UUID `validator:"nonzero"`
+}
+
+func NewLinkedCategoryIdOfLink(id pgtype.UUID) *LinkedCategoryId {
+	return &LinkedCategoryId{
+		Value: id,
+	}
+}
+
+func (n *LinkedCategoryId) validate() error {
 	err := validator.Validate(n)
 	if err != nil {
 		return err

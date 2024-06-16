@@ -25,8 +25,8 @@ func fromDeleteCategoryByIdResultToResponse(result delete_category_by_id.DeleteC
 	}
 }
 
-func buildDeleteCategoryByIdToCommand(id string) delete_category_by_id.DeleteCategoryByIdCommand {
-	return delete_category_by_id.DeleteCategoryByIdCommand{
+func buildDeleteCategoryByIdToCommand(id string) delete_category_by_id.DeleteCategoryByIdQuery {
+	return delete_category_by_id.DeleteCategoryByIdQuery{
 		Id: id,
 	}
 }

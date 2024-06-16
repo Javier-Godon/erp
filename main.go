@@ -2,11 +2,13 @@ package main
 
 import (
 	_ "database/sql"
-	createcategory "erp-back/catalog/usecases/create_category/rest"
-	deletecategorybyid "erp-back/catalog/usecases/delete_category_by_id/rest"
-	getallmaincategories "erp-back/catalog/usecases/get_all_main_categories/rest"
-	getcategorybyid "erp-back/catalog/usecases/get_category_by_id/rest"
-	updatecategory "erp-back/catalog/usecases/upsert_category/rest"
+	deleteCategoryById "erp-back/catalog/usecases/delete_category_by_id/rest"
+	getAllmainCategories "erp-back/catalog/usecases/get_all_main_categories/rest"
+	getCategoryById "erp-back/catalog/usecases/get_category_by_id/rest"
+	deleteCategoryLink "erp-back/catalog/usecases/link/delete_category_link_by_id/rest"
+	getCategoryLinkById "erp-back/catalog/usecases/link/get_category_link_by_id/rest"
+	upsertCategoryLink "erp-back/catalog/usecases/link/upsert_category_link/rest"
+	updateCategory "erp-back/catalog/usecases/upsert_category/rest"
 	"erp-back/framework"
 	"github.com/gin-gonic/gin"
 	//"github.com/golang-migrate/migrate/v4"
@@ -48,11 +50,15 @@ func main() {
 	framework.InitDatabase()
 
 	router := gin.Default()
-	createcategory.RouteCreateCategory(router)
-	updatecategory.RouteUpsertCategory(router)
-	deletecategorybyid.RouteDeleteCategoryById(router)
-	getcategorybyid.RouteGetCategoryById(router)
-	getallmaincategories.RouteGetAllMainCategories(router)
+	//createcategory.RouteCreateCategory(router)
+	updateCategory.RouteUpsertCategory(router)
+	deleteCategoryById.RouteDeleteCategoryById(router)
+	getCategoryById.RouteGetCategoryById(router)
+	getAllmainCategories.RouteGetAllMainCategories(router)
+	deleteCategoryLink.RouteDeleteCategoryLinkById(router)
+	upsertCategoryLink.RouteUpsertCategoryLink(router)
+	getCategoryLinkById.RouteGetCategoryLinkById(router)
+
 	err := router.Run(serverAddress)
 	if err != nil {
 		log.Fatal("cannot start server: ", err)

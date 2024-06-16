@@ -5,7 +5,7 @@ import (
 )
 
 type CategoryLink struct {
-	id               pgtype.UUID
-	mainCategoryId   Category
-	linkedCategoryId Category
+	Id               pgtype.UUID
+	MainCategoryId   MainCategoryId
+	LinkedCategoryId LinkedCategoryId
 }

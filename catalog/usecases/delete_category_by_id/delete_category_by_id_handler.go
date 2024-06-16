@@ -16,7 +16,7 @@ func NewDeleteCategoryByIdHandler(repository catalog.Repository) *DeleteCategory
 	}
 }
 
-func (handler DeleteCategoryByIdHandler) Handle(command DeleteCategoryByIdCommand) (DeleteCategoryByIdResult, error) {
+func (handler DeleteCategoryByIdHandler) Handle(command DeleteCategoryByIdQuery) (DeleteCategoryByIdResult, error) {
 	catalogRepository := adapter.New()
 	uuid := framework.StringToUUID(command.Id)
 	categoryId, err := catalogRepository.DeleteCategory(uuid)
