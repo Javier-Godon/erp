@@ -1,0 +1,8 @@
+server:
+  port: 8799
+postgres:
+  dbDriver: postgres
+  uri: postgres://postgres:postgres@blue-env.com:31543/blue_postgres?sslmode=disable&search_path=public
+  user: postgres
+  password: postgres
+  database: blue-mongodb

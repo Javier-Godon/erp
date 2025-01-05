@@ -3,18 +3,22 @@ package framework
 //_ "github.com/jackc/pgx/v5"
 import (
 	"context"
-	"github.com/jackc/pgx/v5/pgxpool"
 	"log"
+
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 var DB *pgxpool.Pool
 
 func InitDatabase() {
-	const (
-		dbDriver = "postgres"
-		//dbSource      = "postgres://postgres:postgres@localhost:31544/postgres?sslmode=disable&search_path=public"
-		dbSource = "postgres://postgres:postgres@localhost:5444/erp?sslmode=disable&search_path=public"
-	)
+	dbSource := AppConfig.PostgresUrl.URI
+
+	// const (
+	// 	// dbDriver = "postgres"
+	// 	// dbSource = "postgres://postgres:postgres@blue-env.com:31543/blue_postgres?sslmode=disable&search_path=public"
+	// 	  dbSource = AppConfig.PostgresUrl
+	// 	// dbSource = "postgres://postgres:postgres@localhost:5444/erp?sslmode=disable&search_path=public"
+	// )
 	//database, err := sql.Open(dbDriver, dbSource)
 	//if err != nil {
 	//	log.Fatal("cannot connect to db:", err)
