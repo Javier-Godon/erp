@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
+	"strings"
 	"time"
 
 	"net/http"
@@ -29,15 +31,25 @@ func main() {
 	password := client.SetSecret("password", os.Getenv("CR_PAT"))
 
 	// Define project paths
-	projectRoot := "./app"
+	packageRoot, err := os.Getwd()
+	if err != nil {
+		log.Fatalf("Failed to get current working directory: %v", err)
+	}
+
+	projectRoot := filepath.Join(packageRoot, "..") // Resolve the absolute path for ../app
+	if _, err := os.Stat(projectRoot); os.IsNotExist(err) {
+		log.Fatalf("Directory %s does not exist", projectRoot)
+	}
+	log.Printf("Resolved projectRoot: %s", projectRoot)
+
 	source := client.Host().Directory(projectRoot)
 
 	// Create a base container for building and testing the Go app
 	appContainer := client.Container().
-		From("golang:1.23-slim").
-		WithMountedDirectory("/app", source).
-		WithWorkdir("/app").
-		WithExec([]string{"go", "build", "-o", "app"})
+		// From("golang:1.23.4").
+		WithMountedDirectory("/app", source)
+		// WithWorkdir("/app").
+		// WithExec([]string{"go", "build", "-o", "app"})
 
 	// Retrieve the latest commit SHA
 	repoURL := "https://github.com/Javier-Godon/erp-back"
@@ -67,20 +79,20 @@ func main() {
 	image := appContainer.
 		Directory("/app").
 		DockerBuild(dagger.DirectoryDockerBuildOpts{
-			Dockerfile: "../Dockerfile", // Path to Dockerfile relative to /app
+			Dockerfile: "Dockerfile", // Path to Dockerfile relative to /app
 			BuildArgs:  buildArgs,
 		},
 		)
 	if err != nil {
 		log.Fatalf("Failed to build the Docker image: %v", err)
 	}
-	
+
 	if err != nil {
 		log.Fatalf("Failed to build the Docker image: %v", err)
 	}
 
 	// Push the image to GHCR
-	imageAddress := fmt.Sprintf("ghcr.io/%s/erp-back:%s", username, imageTag)
+	imageAddress := fmt.Sprintf("ghcr.io/%s/erp-back:%s", strings.ToLower(username), imageTag)
 	_, err = image.WithRegistryAuth("ghcr.io", username, password).
 		Publish(ctx, imageAddress)
 	if err != nil {
@@ -90,24 +102,24 @@ func main() {
 	log.Printf("Image published at: %s", imageAddress)
 
 	// Trigger GitHub Action
-	dispatchURL := "https://api.github.com/repos/Javier-Godon/cluster-continuous-delivery/dispatches"
-	payload := map[string]interface{}{
-		"event_type": "image-tag-in-erp-back-dev-updated",
-		"client_payload": map[string]string{
-			"image_tag": imageTag,
-		},
-	}
-	headers := map[string]string{
-		"Authorization": fmt.Sprintf("token %s", os.Getenv("CR_PAT")),
-		"Accept":        "application/vnd.github+json",
-	}
+	// dispatchURL := "https://api.github.com/repos/Javier-Godon/cluster-continuous-delivery/dispatches"
+	// payload := map[string]interface{}{
+	// 	"event_type": "image-tag-in-erp-back-dev-updated",
+	// 	"client_payload": map[string]string{
+	// 		"image_tag": imageTag,
+	// 	},
+	// }
+	// headers := map[string]string{
+	// 	"Authorization": fmt.Sprintf("token %s", os.Getenv("CR_PAT")),
+	// 	"Accept":        "application/vnd.github+json",
+	// }
 
-	// Send the request
-	if err := triggerGitHubAction(ctx, dispatchURL, headers, payload); err != nil {
-		log.Fatalf("Failed to trigger GitHub Action: %v", err)
-	}
+	// // Send the request
+	// if err := triggerGitHubAction(ctx, dispatchURL, headers, payload); err != nil {
+	// 	log.Fatalf("Failed to trigger GitHub Action: %v", err)
+	// }
 
-	log.Println("GitHub Action triggered successfully")
+	// log.Println("GitHub Action triggered successfully")
 }
 
 func checkEnvVariables() {

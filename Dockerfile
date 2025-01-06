@@ -5,7 +5,7 @@ FROM golang:1.23.4 AS builder
 WORKDIR /app
 
 # Copy go.mod and go.sum files to the container
-COPY go.mod go.sum ./
+COPY app/go.mod app/go.sum ./
 
 # Download all dependencies (cache dependencies layer)
 RUN go mod download
@@ -13,8 +13,10 @@ RUN go mod download
 # Copy the source code into the container
 COPY . .
 
+WORKDIR /app/app
+
 # Build the application (replace "main.go" with your actual entry point if different)
-RUN go build -o main .
+RUN go build -o app .
 
 # Use a minimal base image for the final container
 FROM alpine:latest
@@ -26,7 +28,7 @@ RUN apk --no-cache add ca-certificates
 WORKDIR /root/
 
 # Copy the compiled binary from the builder
-COPY --from=builder /app/main .
+COPY --from=builder /app/app .
 
 # Expose the port your Gin app runs on
 EXPOSE 8080
