@@ -1,0 +1,1 @@
+to run dagger pipeline locally: CR_PAT=<github_token> USERNAME=<github_user> go run pipeline.go
