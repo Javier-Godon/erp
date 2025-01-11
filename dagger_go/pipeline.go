@@ -102,24 +102,24 @@ func main() {
 	log.Printf("Image published at: %s", imageAddress)
 
 	// Trigger GitHub Action
-	// dispatchURL := "https://api.github.com/repos/Javier-Godon/cluster-continuous-delivery/dispatches"
-	// payload := map[string]interface{}{
-	// 	"event_type": "image-tag-in-erp-back-dev-updated",
-	// 	"client_payload": map[string]string{
-	// 		"image_tag": imageTag,
-	// 	},
-	// }
-	// headers := map[string]string{
-	// 	"Authorization": fmt.Sprintf("token %s", os.Getenv("CR_PAT")),
-	// 	"Accept":        "application/vnd.github+json",
-	// }
+	dispatchURL := "https://api.github.com/repos/Javier-Godon/cluster-continuous-delivery/dispatches"
+	payload := map[string]interface{}{
+		"event_type": "image-tag-in-erp-back-go-dev-updated",
+		"client_payload": map[string]string{
+			"image_tag": imageTag,
+		},
+	}
+	headers := map[string]string{
+		"Authorization": fmt.Sprintf("token %s", os.Getenv("CR_PAT")),
+		"Accept":        "application/vnd.github+json",
+	}
 
-	// // Send the request
-	// if err := triggerGitHubAction(ctx, dispatchURL, headers, payload); err != nil {
-	// 	log.Fatalf("Failed to trigger GitHub Action: %v", err)
-	// }
+	// Send the request
+	if err := triggerGitHubAction(ctx, dispatchURL, headers, payload); err != nil {
+		log.Fatalf("Failed to trigger GitHub Action: %v", err)
+	}
 
-	// log.Println("GitHub Action triggered successfully")
+	log.Println("GitHub Action triggered successfully")
 }
 
 func checkEnvVariables() {

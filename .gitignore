@@ -237,3 +237,5 @@ go.work
 
 launch.json
 postgres-erp
+.local/*
+*text_for_readme.odt
