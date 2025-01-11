@@ -1,0 +1,42 @@
+name: Run Dagger Pipeline
+
+on:
+  workflow_dispatch: # Manually triggered workflow
+  repository_dispatch:
+    types:
+      - dagger-pipeline-trigger
+
+jobs:
+  run-dagger-pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set Environment Variables
+        env:
+          CR_PAT: ${{ secrets.CR_PAT }}
+          USERNAME: ${{ secrets.USERNAME }}
+        run: |
+          # Export environment variables so Dagger can access them
+          echo "CR_PAT=${CR_PAT}" >> $GITHUB_ENV
+          echo "USERNAME=${USERNAME}" >> $GITHUB_ENV
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Go environment
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.23.4" # Use the Go version required by your pipeline
+
+      # Step 4: Install dependencies
+      - name: Install dependencies
+        run: |
+          cd app
+          go mod tidy
+
+      # Step 5: Execute Dagger pipeline
+      - name: Run Dagger pipeline
+        run: |
+          cd dagger_go
+          go run pipeline.go
