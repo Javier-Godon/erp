@@ -27,7 +27,7 @@ FROM alpine:latest
 RUN apk --no-cache add ca-certificates
 
 # Set the Current Working Directory inside the container
-WORKDIR /root/
+WORKDIR /app
 
 # Copy the compiled binary from the builder
 COPY --from=builder /application ./
