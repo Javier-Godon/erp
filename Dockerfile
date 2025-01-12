@@ -36,7 +36,7 @@ COPY ./app/application.yaml ./application.yaml
 COPY ./app/db/migration ./db/migration
 
 # Expose the port your Gin app runs on
-EXPOSE 8080
+EXPOSE 8799
 
 # Command to run the executable
 CMD ["./application"]
