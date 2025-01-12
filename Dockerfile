@@ -11,10 +11,7 @@ COPY app/go.mod app/go.sum ./
 RUN go mod download
 
 # Copy the source code into the container
-COPY ./app .
-
-# Move to the directory containing the Go application
-# WORKDIR /app/app
+COPY ./app ./
 
 # Build the application with static linking
 # and creates a static application binary named application in the root of the filesystem of the image.
@@ -33,10 +30,10 @@ WORKDIR /app
 COPY --from=builder /application ./
 
 # Copy the configuration file
-COPY ./app/application.yaml ./application.yaml
+COPY ./application.yaml ./application.yaml
 
 # Copy the configuration file
-COPY ./app/db/migration ./db/migration
+COPY ./db/migration ./db/migration
 
 # Expose the port your Gin app runs on
 EXPOSE 8080
