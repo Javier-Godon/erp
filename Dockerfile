@@ -30,10 +30,10 @@ WORKDIR /app
 COPY --from=builder /application ./
 
 # Copy the configuration file
-COPY ./application.yaml ./application.yaml
+COPY ./app/application.yaml ./application.yaml
 
-# Copy the configuration file
-COPY ./db/migration ./db/migration
+# Copy the migration folder
+COPY ./app/db/migration ./db/migration
 
 # Expose the port your Gin app runs on
 EXPOSE 8080
