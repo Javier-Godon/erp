@@ -35,6 +35,9 @@ COPY --from=builder /application ./
 # Copy the configuration file
 COPY ./app/application.yaml ./application.yaml
 
+# Copy the configuration file
+COPY ./app/db/migration ./db/migration
+
 # Expose the port your Gin app runs on
 EXPOSE 8080
 
