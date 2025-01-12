@@ -11,13 +11,14 @@ COPY app/go.mod app/go.sum ./
 RUN go mod download
 
 # Copy the source code into the container
-COPY . .
+COPY ./app .
 
 # Move to the directory containing the Go application
-WORKDIR /app/app
+# WORKDIR /app/app
 
 # Build the application with static linking
-RUN CGO_ENABLED=0 GOOS=linux go build -o main .
+# and creates a static application binary named application in the root of the filesystem of the image.
+RUN CGO_ENABLED=0 GOOS=linux go build -o /application
 
 # Use a minimal base image for the final container
 FROM alpine:latest
@@ -29,10 +30,10 @@ RUN apk --no-cache add ca-certificates
 WORKDIR /root/
 
 # Copy the compiled binary from the builder
-COPY --from=builder /app/app/main .
+COPY --from=builder /application ./
 
 # Expose the port your Gin app runs on
 EXPOSE 8080
 
 # Command to run the executable
-CMD ["./main"]
+CMD ["./application"]
