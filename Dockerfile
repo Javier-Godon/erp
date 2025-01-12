@@ -13,10 +13,11 @@ RUN go mod download
 # Copy the source code into the container
 COPY . .
 
+# Move to the directory containing the Go application
 WORKDIR /app/app
 
-# Build the application (replace "main.go" with your actual entry point if different)
-RUN go build -o main .
+# Build the application with static linking
+RUN CGO_ENABLED=0 GOOS=linux go build -o main .
 
 # Use a minimal base image for the final container
 FROM alpine:latest
@@ -28,7 +29,7 @@ RUN apk --no-cache add ca-certificates
 WORKDIR /root/
 
 # Copy the compiled binary from the builder
-COPY --from=builder /app/app .
+COPY --from=builder /app/app/main .
 
 # Expose the port your Gin app runs on
 EXPOSE 8080
