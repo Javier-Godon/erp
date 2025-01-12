@@ -16,7 +16,7 @@ COPY . .
 WORKDIR /app/app
 
 # Build the application (replace "main.go" with your actual entry point if different)
-RUN go build -o app .
+RUN go build -o main .
 
 # Use a minimal base image for the final container
 FROM alpine:latest
@@ -34,4 +34,4 @@ COPY --from=builder /app/app .
 EXPOSE 8080
 
 # Command to run the executable
-CMD ["./app"]
+CMD ["./main"]
